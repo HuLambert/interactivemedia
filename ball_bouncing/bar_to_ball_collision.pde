@@ -1,5 +1,5 @@
 public enum Collision_Side {
-  LEFT, RIGHT, TOP
+  LEFT, RIGHT, TOP, NONE
 };
 
 
@@ -150,6 +150,8 @@ boolean point_in_bar(int left_of_bar, int bar_width, float top_of_bar, PVector p
   return false;
 }
 
+
+
 void handle_bar_to_ball_collision(int ball_iter, int bar_iter, int radius) {
   int bar_top = height - bars[bar_iter];
   int bar_width = ceil(width / bar_count);
@@ -163,7 +165,7 @@ void handle_bar_to_ball_collision(int ball_iter, int bar_iter, int radius) {
       xyr.get(ball_iter).vel_x = (byte)-(abs(xyr.get(ball_iter).vel_x));
       xyr.get(ball_iter).x = (short)((left_of_bar - (radius)) - 1);
       fill(255, 255, 255, 100);
-      ellipse(xyr.get(ball_iter).x, xyr.get(ball_iter).y, radius * 2, radius * 2); 
+      //ellipse(xyr.get(ball_iter).x, xyr.get(ball_iter).y, radius * 2, radius * 2); 
       if (bar_iter > 0) {
         int new_bar_top = height - bars[bar_iter - 1];
         if (new_bar_top < xyr.get(ball_iter).y) {
@@ -178,12 +180,12 @@ void handle_bar_to_ball_collision(int ball_iter, int bar_iter, int radius) {
       xyr.get(ball_iter).vel_x = (byte)(abs(xyr.get(ball_iter).vel_x));
       xyr.get(ball_iter).x = (short)(left_of_bar + bar_width + (radius) + 1);
       fill(255, 255, 255, 100);
-      ellipse(xyr.get(ball_iter).x, xyr.get(ball_iter).y, radius * 2, radius * 2); 
+      //ellipse(xyr.get(ball_iter).x, xyr.get(ball_iter).y, radius * 2, radius * 2); 
 
       if (bar_iter < bar_count - 1) {
         int new_bar_top = height - bars[bar_iter + 1];
         fill(255, 255, 255, 100);
-        ellipse(xyr.get(ball_iter).x, xyr.get(ball_iter).y, radius * 2, radius * 2); 
+        //ellipse(xyr.get(ball_iter).x, xyr.get(ball_iter).y, radius * 2, radius * 2); 
         if (new_bar_top < xyr.get(ball_iter).y) {
           xyr.get(ball_iter).y = (short)(new_bar_top - (radius) - 1);
           xyr.get(ball_iter).vel_y = (byte)-(abs(xyr.get(ball_iter).vel_y));
@@ -193,10 +195,10 @@ void handle_bar_to_ball_collision(int ball_iter, int bar_iter, int radius) {
     }
   case TOP: 
     {
-      xyr.get(ball_iter).vel_y = (byte)-(abs(xyr.get(ball_iter).vel_y));
+      xyr.get(ball_iter).vel_y = (byte)(-15);
       xyr.get(ball_iter).y = (short)(bar_top - (radius) - 1);
       fill(255, 255, 255, 100);
-      ellipse(xyr.get(ball_iter).x, xyr.get(ball_iter).y, radius * 2, radius * 2); 
+      //ellipse(xyr.get(ball_iter).x, xyr.get(ball_iter).y, radius * 2, radius * 2); 
       break;
     }
   }

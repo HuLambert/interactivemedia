@@ -6,7 +6,7 @@ void update_balls() {
     //Collision work, only checks ahead
     xyr.get(i).x += xyr.get(i).vel_x;    
     xyr.get(i).y += xyr.get(i).vel_y;
-    byte terminal_velocity = 10;
+    byte terminal_velocity = 15;
     xyr.get(i).vel_x += xyr.get(i).accel_x;    
     xyr.get(i).vel_y += xyr.get(i).accel_y;
     

@@ -45,8 +45,8 @@ void draw_all_items (String displaytext, int radius, ArrayList<item> balls) {
     int x = ceil(width / bar_count);
     fill(255, 0, 0, 100);
     rect(x * (i), height - bars[i], x, bars[i]);
-    fill(0, 0, 255, 100);
-    rect(x * (i), height - (bars[i] - bar_vel[i]), x, bars[i] - bar_vel[i]);
+    //fill(0, 0, 255, 100);
+    //rect(x * (i), height - (bars[i] - bar_vel[i]), x, bars[i] - bar_vel[i]);
     
   }
   for (int i = 0; i < balls.size(); i++) {
@@ -56,8 +56,8 @@ void draw_all_items (String displaytext, int radius, ArrayList<item> balls) {
     //text(balls.get(i).toString(), balls.get(i).x, balls.get(i).y - (2 * radius));
     fill(255, 255, 255, 100);
     ellipse(balls.get(i).x, balls.get(i).y, radius * 2, radius * 2); 
-    fill(0, 255, 255, 100);
-    ellipse(balls.get(i).x_old, balls.get(i).y_old, radius * 2, radius * 2); 
+    //fill(0, 255, 255, 100);
+    //ellipse(balls.get(i).x_old, balls.get(i).y_old, radius * 2, radius * 2); 
     fill(255, 255, 255, 255);
     textSize(radius * 2);
     textAlign(CENTER, CENTER);
@@ -70,7 +70,7 @@ void draw_all_items (String displaytext, int radius, ArrayList<item> balls) {
 
 
 ArrayList<item> xyr = new ArrayList<item>();
-int bar_count = 30; 
+int bar_count = 8; 
 short[] bars = new short[bar_count];
 short[] bar_vel = new short[bar_count];
 
@@ -79,15 +79,16 @@ short[] bar_vel = new short[bar_count];
 
 void setup() {
   RG.init(this);
-  size(1920, 480);
-  for (int i = 0; i < 30; i++) {
+  size(1920, 1080);
+  delay(750);
+  for (int i = 0; i < 16; i++) {
     xyr.add(new item());
-    xyr.get(xyr.size() -1).x = (short)((i * 60) % width);
-    xyr.get(xyr.size() -1).y = (short)(random(400, 300));
+    xyr.get(xyr.size() -1).x = (short)((i * 60) %  width);
+    xyr.get(xyr.size() -1).y = (short)(random(-400, 300));
     xyr.get(xyr.size() -1).vel_x = (byte)(random(-30, 30));
   }
   background(0);
-  frameRate(30);
+  frameRate(25);
 }
 
 int framecount = 0;
@@ -101,7 +102,7 @@ void draw() {
   if (framecount % 10 == 0) {
     background(0);
   }
-  int radius = 8;
+  int radius = 20;
   draw_all_items("0123456789", radius, xyr);
 
 
@@ -116,7 +117,7 @@ void draw() {
   Collections.sort(xyr, new sortByX());
   bar_to_ball_collisions(radius);
   Collections.sort(xyr, new sortByX());
-  //ball_to_ball_collisions(radius); 
+  ball_to_ball_collisions(radius); 
   Collections.sort(xyr, new sortByX());
   //draw_all_items("0123456789", radius, xyr);
 }

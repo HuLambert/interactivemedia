@@ -139,10 +139,10 @@ Ball_Pair handle_collision_with_balls(Ball lhs, Ball rhs, int radius, int paddin
   //This function is different from previous to the refactor
   //Investigate here if errors are occurding
   if (lhs.colliding_With_Ball(rhs, radius)) {
-    PVector_Pair dirs_2 = resolve_overlap(lhs, rhs, radius, padding); //<>//
+    PVector_Pair dirs_2 = resolve_overlap(lhs, rhs, radius, padding); //<>// //<>//
     lhs.apply_Vel_ABSround(dirs_2.v1.mult(2));
     println("This function is experimental, if errors with collisions occur check here");
   }
 
-  return new Ball_Pair(lhs, rhs); //<>//
+  return new Ball_Pair(lhs, rhs); //<>// //<>//
 }

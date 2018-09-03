@@ -67,21 +67,28 @@ class Bar_Manager { //<>//
   }
 
   // CIRCLE/RECTANGLE
-  boolean circleRect(float cx, float cy, float radius, float rx, float ry, float rw, float rh) {
+  boolean circleRect(Ball ball, float radius, int iter) {
 
     // temporary variables to set edges for testing
-    float testX = cx;
-    float testY = cy;
+    float corner_X = ball.x;
+    float corner_Y = ball.y;
 
     // which edge is closest?
-    if (cx < rx)         testX = rx;      // test left edge
-    else if (cx > rx+rw) testX = rx+rw;   // right edge
-    if (cy < ry)         testY = ry;      // top edge
-    else if (cy > ry+rh) testY = ry+rh;   // bottom edge
+    if (ball.x < get_bar_left(iter)) {         
+      corner_X = get_bar_left(iter);
+    }// test left edge
+    else if (ball.x > get_bar_left(iter)+get_bar_width()) {
+      corner_X = get_bar_left(iter) + get_bar_width();
+    } // right edge
+    if (ball.y < get_height(iter)) {         
+      corner_Y = get_height(iter);      // top edge
+    } else if (ball.y > get_height(iter)+bars_height[iter]) {
+      corner_Y = get_height(iter) + bars_height[iter];   // bottom edge
+    }
 
     // get distance from closest edges
-    float distX = cx-testX;
-    float distY = cy-testY;
+    float distX = ball.x-corner_X;
+    float distY = ball.y-corner_Y;
     float distance = sqrt( (distX*distX) + (distY*distY) );
 
     // if the distance is less than the radius, collision!
@@ -92,7 +99,7 @@ class Bar_Manager { //<>//
   }
 
   Collision_Side ball_in_bar (Ball ball, int bar, int radius) {
-    if (circleRect(ball.x, ball.y, radius, get_bar_left(bar), get_height(bar), get_bar_width(), bars_height[bar])) {
+    if (circleRect(ball, radius, bar)) {
       return  bar_to_ball_side(ball, get_height(bar), get_height_previous(bar), get_bar_left(bar), get_bar_left(bar + 1), radius);
     } else {
       return Collision_Side.NONE;

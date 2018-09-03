@@ -1,34 +1,63 @@
-//I am disgusted that this is copy paste code. 
 
 
+Collision_Side bar_to_ball_side(Ball ball, int bar_height_curr, int bar_height_old, int bar_left, int bar_right, int radius) { 
 
-Collision_Side get_Ball_and_Bar_collision_side_by_iter (int ball_i, int radius) {
-  int bar_width = ceil(width / bar_count);
-  int left_of_bar  = 0; //bar_width * i;
-  int right_of_bar = 0;//bar_width * (i + 1);
-  int top_of_bar = 0;
-
-  int left_of_ball  = 0; //xyr.get(ball_iter).x - radius;
-  int right_of_ball = 0; //xyr.get(ball_iter).x + radius; 
-  int bottom_of_ball = 0;
-  for (int i = 0; i < bar_count; i++)
-  {
-    left_of_bar = bar_width * i;
-    right_of_bar = bar_width * (i + 1);
-    top_of_bar = height - bars[i];
-
-
-    left_of_ball  = xyr.get(ball_i).x - radius;
-    right_of_ball = xyr.get(ball_i).x + radius;
-    bottom_of_ball = xyr.get(ball_i).y + radius;
-
-    if (left_of_ball < right_of_bar) {
-      if (right_of_ball > left_of_bar) {
-        if (bottom_of_ball > top_of_bar) {
-          return bar_to_ball_with_eq(xyr.get(ball_i), top_of_bar, top_of_bar - bar_vel[i], left_of_bar, left_of_bar + bar_width, radius);
-        }
-      }
-    }
+  if (ball.x - ball.x_old == 0) {
+    return (Collision_Side.TOP);
   }
-  return Collision_Side.NONE;
+  //Bodge, needs to be done seperately
+
+  int ball_left_prev = ball.x_old - radius;
+  int ball_right_prev = ball.x_old + radius;
+  
+  boolean was_previously_in_lines = 
+    ((ball_right_prev > bar_left) && (ball_left_prev < bar_right)) 
+    | 
+    ((ball_left_prev < bar_right) && (ball_right_prev > bar_left));
+
+  int ball_left = ball.x - radius;
+  int ball_right = ball.x + radius;
+  boolean in_lines = 
+    ((ball_right > bar_left) && (ball_left < bar_right)) 
+    | 
+    ((ball_left < bar_right) && (ball_right > bar_left));
+
+  if (in_lines && was_previously_in_lines) {
+    return (Collision_Side.TOP);
+  }
+  //If the ball was |o| it could only have hit this bar from the top. 
+  boolean came_from_above = 
+    was_previously_in_lines
+    && (ball.y_old <= bar_height_curr);
+
+  boolean came_from_above_2 = 
+    was_previously_in_lines
+    && (ball.y_old < bar_height_old);
+
+  if (came_from_above != came_from_above_2) {
+  }
+
+  if (came_from_above) {
+    return (Collision_Side.TOP);
+  }
+  float gradiant = (float)(ball.y - ball.y_old) / float(ball.x - ball.x_old);
+  float y_intercept = ball.y - (float)(gradiant * ball.x_old);
+
+  float x = (bar_height_curr - y_intercept) / gradiant;
+  float bar_intercept = 0;
+  Collision_Side ret;
+
+
+  if (ball.x_old - radius <= bar_left) {
+    bar_intercept = (gradiant * bar_left) + y_intercept; //Came from left
+    ret = Collision_Side.LEFT;
+  } else {
+    bar_intercept = (gradiant * bar_right) + y_intercept; //Came from right
+    ret = Collision_Side.RIGHT;
+  }
+  if (bar_intercept + radius >= bar_height_curr) {
+    return ret;
+  } else {
+    return Collision_Side.TOP;
+  }
 }

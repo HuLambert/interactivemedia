@@ -4,6 +4,7 @@ class Ball {
     return new PVector(x, y);
   }
 
+
   PVector get_Vel() {
     return new PVector(vel_x, vel_y);
   }
@@ -12,10 +13,10 @@ class Ball {
     return PVector.sub(get_Vel(), rhs.get_Vel());
   }
 
-  void draw(int radius, char text) {
-    fill(255);
+  void draw(int radius, char text, color ball_color, color text_color) {
+    fill(ball_color);
     ellipse(x, y, radius * 2, radius * 2); 
-    fill(100);
+    fill(text_color);
     text(text, x, y - 4);
   }
 
@@ -120,7 +121,6 @@ class Ball {
   byte vel_deg; 
   byte accel_x; 
   byte accel_y; 
-
 
   String toString() {
     return 

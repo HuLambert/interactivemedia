@@ -6,11 +6,18 @@ class Bar_Manager { //<>//
       bars_height[i] = (short)(max(bars_height[i] + rand, 20));
     }
   }
+  int screen_width = 360;
+  int screen_height = 480;
+  
+  void set_dimensions(int screen_width, int screen_height) {
+    this.screen_width = screen_width;
+    this.screen_height = screen_height;
+  }
 
-  void draw() {
+  void draw(color[] bar_color) {
     fill(255, 0, 0, 255);
-
     for (int i = 0; i < bars_height.length; i++) {
+      fill(bar_color[i % bar_color.length]);
       rect(get_bar_width() * (i), get_height(i), get_bar_width(), bars_height[i]);
     }
   }
@@ -27,7 +34,7 @@ class Bar_Manager { //<>//
         if (col != Collision_Side.NONE) {
           balls[j] = handle_bar_to_ball_collision(balls[j], i, this, col, radius);
         }
-        
+
         if (balls[j].x - radius > get_bar_left(i+2)) { //Gonne be honest, no fucking clue why i + 1 doesn't work, 2 seems to work
           break;
         }
@@ -41,14 +48,14 @@ class Bar_Manager { //<>//
     return bars_height.length;
   }
   int get_height(int i) {
-    return height - bars_height[i];
+    return screen_height - bars_height[i];
   }
   int get_height_previous(int i) {
-    return height - bars_previous_height[i];
+    return screen_height - bars_previous_height[i];
   }
 
   int get_bar_width() {
-    return ceil(width / bars_height.length);
+    return ceil(screen_width / bars_height.length);
   }
 
   int get_bar_left(int i) {
@@ -75,7 +82,7 @@ class Bar_Manager { //<>//
     return false;
   }
 
-  
+
   boolean circleRect(Ball ball, float radius, int iter) {
 
     // temporary variables to set edges for testing

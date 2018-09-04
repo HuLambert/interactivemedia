@@ -1,7 +1,7 @@
 class Bar_Manager { //<>//
   void update_bars () {
     for (int i = 0; i < bars_height.length; i++) {
-      short rand = (short)(random(-5, 5));
+      short rand = (short)(random(-10, 10));
       bars_previous_height[i] = bars_height[i];
       bars_height[i] = (short)(max(bars_height[i] + rand, 20));
     }
@@ -11,16 +11,25 @@ class Bar_Manager { //<>//
     fill(255, 0, 0, 255);
 
     for (int i = 0; i < bars_height.length; i++) {
-      rect(get_bar_width() * (i), get_height(i), get_bar_width(), get_height(i));
+      rect(get_bar_width() * (i), get_height(i), get_bar_width(), bars_height[i]);
     }
   }
 
   Ball[] bar_to_ball_collisions (Ball[] balls, int radius) {
+    Arrays.sort(balls, new sortBallByX());
+    int min = 0;
     for (int i = 0; i < bar_count(); i++) {
-      for (int j = 0; j < balls.length; j++) {
+      for (int j = min; j < balls.length; j++) {
         Collision_Side col = ball_in_bar(balls[j], i, radius);
+        if (balls[j].x + radius < get_bar_left(i + 1)) { //Optimisation
+          min = j;
+        }
         if (col != Collision_Side.NONE) {
           balls[j] = handle_bar_to_ball_collision(balls[j], i, this, col, radius);
+        }
+        
+        if (balls[j].x - radius > get_bar_left(i+2)) { //Gonne be honest, no fucking clue why i + 1 doesn't work, 2 seems to work
+          break;
         }
       }
     }
@@ -66,7 +75,7 @@ class Bar_Manager { //<>//
     return false;
   }
 
-  // CIRCLE/RECTANGLE
+  
   boolean circleRect(Ball ball, float radius, int iter) {
 
     // temporary variables to set edges for testing
@@ -104,45 +113,6 @@ class Bar_Manager { //<>//
     } else {
       return Collision_Side.NONE;
     }
-
-    /*
-    if (ball.get_left_of_ball(radius) < get_bar_width() * (bar + 1)) {
-     if (ball.get_right_of_ball(radius) > get_bar_width() * (bar)) {
-     if (ball.get_bottom_of_ball(radius) > get_height(bar)) {
-     }
-     }
-     }
-     
-     
-     
-     {
-     int corner_y = get_height(bar);
-     int corner_x = get_bar_width() * bar;
-     if (ball.x_old > get_bar_width() * (bar + 1)) {
-     corner_x += get_bar_width();
-     }
-     if (point_in_bar(ball.x, ball.y, bar)) {
-     return  bar_to_ball_side(ball, get_height(bar), get_height_previous(bar), get_bar_left(bar), get_bar_left(bar + 1), radius);
-     }
-     
-     int corner_y = get_height(bar);
-     int corner_x = get_bar_width() * bar;
-     
-     if (ball.x_old > get_bar_width() * (bar + 1)) {
-     corner_x += get_bar_width();
-     }
-     
-     float distX = ball.x - corner_x; 
-     float distY = ball.y - corner_y; 
-     float distance = sqrt((distX * distX) + (distY * distY));
-     
-     if (distance < radius) {
-     return  bar_to_ball_side(ball, get_height(bar), get_height_previous(bar), get_bar_left(bar), get_bar_left(bar + 1), radius);
-     }
-     
-     return Collision_Side.NONE;
-     }
-     */
   }
 
   Collision_Side ball_in_any_bar (Ball ball, int radius) {

@@ -1,4 +1,4 @@
-//<>// //<>// //<>// //<>// //<>// //<>// //<>//
+//<>// //<>// //<>// //<>// //<>// //<>//
 import geomerative.RFont;
 import geomerative.RShape;
 import geomerative.RG;
@@ -13,10 +13,10 @@ void setup() {
   RG.init(this);
   size(640, 480);
   delay(750);
-  engine = new Engine_Ball_Bar(16, 10, 16);
+  engine = new Engine_Ball_Bar(10, 10, 32);
   
   background(0);
-  frameRate(15);
+  frameRate(30);
 }
 
 void draw() {

@@ -1,7 +1,14 @@
-
-
 Collision_Side bar_to_ball_side(Ball ball, int bar_height_curr, int bar_height_old, int bar_left, int bar_right, int radius) { 
-
+  
+  //There's no way it can go from below to above
+  if (ball.y_old > bar_height_curr) {
+    if (ball.x_old < bar_left){
+      return Collision_Side.LEFT;
+    }
+    return Collision_Side.RIGHT;
+  }
+  
+  //Moving straight down
   if (ball.x - ball.x_old == 0) {
     return (Collision_Side.TOP);
   }
@@ -55,7 +62,7 @@ Collision_Side bar_to_ball_side(Ball ball, int bar_height_curr, int bar_height_o
     bar_intercept = (gradiant * bar_right) + y_intercept; //Came from right
     ret = Collision_Side.RIGHT;
   }
-  if (bar_intercept + radius >= bar_height_curr) {
+  if (bar_intercept + radius > bar_height_curr) {
     return ret;
   } else {
     return Collision_Side.TOP;

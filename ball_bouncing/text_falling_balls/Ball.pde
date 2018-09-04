@@ -13,6 +13,7 @@ class Ball {
   }
 
   void draw(int radius, char text) {
+    fill(255);
     ellipse(x, y, radius * 2, radius * 2); 
     fill(100);
     text(text, x, y - 4);

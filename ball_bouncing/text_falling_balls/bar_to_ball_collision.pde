@@ -2,9 +2,6 @@ public enum Collision_Side {
   LEFT, RIGHT, TOP, NONE
 };
 
-
-
-
 class Ball_Bar_Collision {
   Ball_Bar_Collision(Collision_Side collision, int bar) {
    this.collision = collision;

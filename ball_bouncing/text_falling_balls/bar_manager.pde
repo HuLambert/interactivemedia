@@ -64,7 +64,8 @@ class Bar_Manager { //<>//
     return false;
   }
 
-
+  //Derived from jeffreythompson who derived it from Matt Worden 
+  //http://www.jeffreythompson.org/collision-detection/circle-rect.php 
   boolean circleRect(Ball ball, float radius, int iter) {
 
     // temporary variables to set edges for testing

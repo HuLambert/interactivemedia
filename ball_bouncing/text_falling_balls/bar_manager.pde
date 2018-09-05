@@ -14,34 +14,16 @@ class Bar_Manager { //<>//
     this.screen_height = screen_height;
   }
 
-  void draw(color[] bar_color) {
+  PGraphics draw(PGraphics pg, color[] bar_color) {
     fill(255, 0, 0, 255);
     for (int i = 0; i < bars_height.length; i++) {
-      fill(bar_color[i % bar_color.length]);
-      rect(get_bar_width() * (i), get_height(i), get_bar_width(), bars_height[i]);
+      pg.fill(bar_color[i % bar_color.length]);
+      pg.rect(get_bar_width() * (i), get_height(i), get_bar_width(), bars_height[i]);
     }
+    return pg;
   }
 
-  Ball[] bar_to_ball_collisions (Ball[] balls, int radius) {
-    Arrays.sort(balls, new sortBallByX());
-    int min = 0;
-    for (int i = 0; i < bar_count(); i++) {
-      for (int j = min; j < balls.length; j++) {
-        Collision_Side col = ball_in_bar(balls[j], i, radius);
-        if (balls[j].x + radius < get_bar_left(i + 1)) { //Optimisation
-          min = j;
-        }
-        if (col != Collision_Side.NONE) {
-          balls[j] = handle_bar_to_ball_collision(balls[j], i, this, col, radius);
-        }
-
-        if (balls[j].x - radius > get_bar_left(i+2)) { //Gonne be honest, no fucking clue why i + 1 doesn't work, 2 seems to work
-          break;
-        }
-      }
-    }
-    return balls;
-  }
+  
 
   int bar_count () 
   {

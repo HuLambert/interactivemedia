@@ -13,11 +13,12 @@ class Ball {
     return PVector.sub(get_Vel(), rhs.get_Vel());
   }
 
-  void draw(int radius, char text, color ball_color, color text_color) {
-    fill(ball_color);
-    ellipse(x, y, radius * 2, radius * 2); 
-    fill(text_color);
-    text(text, x, y - 4);
+  PGraphics draw(PGraphics pg, int radius, char text, color ball_color, color text_color) {
+    pg.fill(ball_color);
+    pg.ellipse(x, y, radius * 2, radius * 2); 
+    pg.fill(text_color);
+    pg.text(text, x, y - (radius / 4));
+    return pg;
   }
 
   //Rounds 0.4 to 1, and -0.4 to -1
